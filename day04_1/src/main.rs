@@ -63,6 +63,7 @@ impl Guard {
         {
             act = Action::WakeUp;
         }
+        
         Guard::new(id,act,time)
     }
 }
@@ -126,7 +127,7 @@ fn solve(data:Vec<&str>)->i32 {
     }
 
     let mut max_v = -1;
-    let mut max_min = 0i32;
+    let mut max_min = 0;
 
     for i in 0..60 {
         if minutes[i]>max_v {
@@ -134,9 +135,6 @@ fn solve(data:Vec<&str>)->i32 {
             max_min = i as i32;
         }
     }
-
-    //println!("{:?}",minutes);
-    //println!("max min {}",max_min);
 
     guard_id*max_min    
 }

@@ -7,13 +7,13 @@ fn dist(a:(i32,i32),b:(i32,i32))->i32 {
 fn sum_dist(p:(i32,i32),points:&Vec<(i32,i32)>)->i32 {
     let mut res = 0;
 
-    for i in 0..points.len() {
-        res+= dist(p,points[i]);
+    for i in points {
+        res+= dist(p,*i);
     }
     res
 }
 
-fn print(field:HashMap<(i32,i32),i32>,f:i32,t:i32)
+fn _print(field:HashMap<(i32,i32),i32>,f:i32,t:i32)
 {
     for y in f..t {
         for x in f..t {

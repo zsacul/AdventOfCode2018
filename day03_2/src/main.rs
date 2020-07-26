@@ -1,6 +1,3 @@
-use std::collections::HashMap;
-
-#[derive(Debug,Clone,Hash)]
 struct Rect {
     x0 : i32,
     y0 : i32,
@@ -23,10 +20,12 @@ impl Rect {
         let lr: Vec<_> = d[1].split(": ").collect();
         let pos: Vec<_> = lr[0].split(",").collect();
         let size: Vec<_> = lr[1].split("x").collect();
+
         let x = pos[0].parse::<i32>().unwrap();
         let y = pos[1].parse::<i32>().unwrap();
         let w = size[0].parse::<i32>().unwrap();
-        let h = size[1].parse::<i32>().unwrap();        
+        let h = size[1].parse::<i32>().unwrap();     
+
         Rect::new(x,y,x+w-1,y+h-1)
     }  
 
@@ -50,17 +49,6 @@ impl Rect {
         self.between(y,self.y0,self.y1) && (self.between(self.x0,x0,x1) || self.between(self.x1,x0,x1))
     }   
     
-    fn rect_overlap(&self, b:&Rect)-> bool
-    {
-        let x_overlap = self.between(self.x0,    b.x0,    b.x1) ||
-                        self.between(   b.x0, self.x0, self.x1);
-    
-        let y_overlap = self.between(self.y0,    b.y0,    b.y1) ||
-                        self.between(   b.y0, self.y0, self.y1);
-    
-        x_overlap && y_overlap
-    }    
-
     fn overlap(&self, r: &Rect)->bool {
 
         if self.point_inside(r.x0,r.y0) ||
@@ -68,10 +56,10 @@ impl Rect {
            self.point_inside(r.x1,r.y0) ||
            self.point_inside(r.x1,r.y1) { return true; }
 
-        if self.line_vert_intersect(r.x0,r.y0,r.y1) { return true; }
-        if self.line_vert_intersect(r.x1,r.y0,r.y1) { return true; }
-        if self.line_hori_intersect(r.y0,r.x0,r.x1) { return true; }
-        if self.line_hori_intersect(r.y1,r.x0,r.x1) { return true; }
+        if self.line_vert_intersect(r.x0,r.y0,r.y1) ||
+           self.line_vert_intersect(r.x1,r.y0,r.y1) ||
+           self.line_hori_intersect(r.y0,r.x0,r.x1) ||
+           self.line_hori_intersect(r.y1,r.x0,r.x1) { return true; }
             
         false
     }
@@ -79,6 +67,7 @@ impl Rect {
 
 fn solve(data:Vec<&str>)->i32 {
     let mut rects = vec![];
+    
     for s in data {
         rects.push(Rect::new_from_string(s));
     }
@@ -98,7 +87,7 @@ fn solve(data:Vec<&str>)->i32 {
 
 fn main() 
 {
-    let data_test = vec![
+    let _data_test = vec![
         "#1 @ 1,3: 4x4",
         "#2 @ 3,1: 4x4",
         "#3 @ 5,5: 2x2",
@@ -1514,8 +1503,6 @@ fn main()
     "#1407 @ 699,840: 28x17"
     ];
     
-//  4316 too high
-//  let res = solve(data_test);
     let res = solve(data);
     println!("{:?}",res);
 }

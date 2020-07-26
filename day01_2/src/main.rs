@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use std::collections::HashSet;
 
 fn main() {
 
@@ -959,20 +959,19 @@ fn main() {
     -26,
     -73113];
 
-        let mut map:HashMap<i64,i64> = HashMap::new(); 
-        
-        let mut sum=0i64;
-        while (true)
+        let mut map = HashSet::new();         
+        let mut sum = 0i64;
+
+        loop
         {
             for i in data.iter() {
                 sum+=i;
-                if (map.contains_key(&sum))
+                if map.contains(&sum)
                 {
                     println!("{}",sum);
                     return;
                 }
-                map.insert(sum,1);
+                map.insert(sum);
             }
-        }
-    
+        }    
     }

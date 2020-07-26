@@ -34,48 +34,6 @@ impl Rect {
         Rect::parse_data(s)
     }
 
-    fn point_inside(&self,x:i32,y:i32)->bool {
-        x>=self.x0 && x<=self.x1 && y>=self.y0 && y<=self.y1
-    }
-
-    fn between(&self,x:i32,x0:i32,x1:i32)->bool {
-        x>=x0 && x<=x1
-    }
-
-    fn line_vert_intersect(&self,x:i32,y0:i32,y1:i32)->bool {
-        self.between(x,self.x0,self.x1) && (self.between(self.y0,y0,y1) || self.between(self.y1,y0,y1))
-    }
-
-    fn line_hori_intersect(&self,y:i32,x0:i32,x1:i32)->bool {
-        self.between(y,self.y0,self.y1) && (self.between(self.x0,x0,x1) || self.between(self.x1,x0,x1))
-    }   
-    
-    fn rect_overlap(&self, b:&Rect)-> bool
-    {
-        let x_overlap = self.between(self.x0,    b.x0,    b.x1) ||
-                        self.between(   b.x0, self.x0, self.x1);
-    
-        let y_overlap = self.between(self.y0,    b.y0,    b.y1) ||
-                        self.between(   b.y0, self.y0, self.y1);
-    
-        x_overlap && y_overlap
-    }    
-
-    fn overlap(&self, r: &Rect)->bool {
-
-        if self.point_inside(r.x0,r.y0) ||
-           self.point_inside(r.x0,r.y1) ||
-           self.point_inside(r.x1,r.y0) ||
-           self.point_inside(r.x1,r.y1) { return true; }
-
-        if self.line_vert_intersect(r.x0,r.y0,r.y1) { return true; }
-        if self.line_vert_intersect(r.x1,r.y0,r.y1) { return true; }
-        if self.line_hori_intersect(r.y0,r.x0,r.x1) { return true; }
-        if self.line_hori_intersect(r.y1,r.x0,r.x1) { return true; }
-            
-        false
-    }
-
     fn paint(&self,h: &mut HashMap<(i32,i32),char>)->i32
     {
         let mut res = 0;
@@ -100,52 +58,26 @@ impl Rect {
     }
 }
 
-//"#1407 @ 699,840: 28x17"
+
 fn solve(data:Vec<&str>)->i32 {
     let mut rects = vec![];
     for s in data {
         rects.push(Rect::new_from_string(s));
     }
 
-    //rects[2].overlap(&rects[0]);
-    //return 0;
-
     let mut h: HashMap<(i32,i32),char> = HashMap::new();
-
     let mut cnt = 0;
 
     for i in 0..rects.len() {
         cnt+=rects[i].paint(&mut h);
     }
-/*
-    for i in 0..rects.len() {
-        let mut counted = false;
-        for j in 0..rects.len() {
-            if i!=j {
-                if rects[i].overlap(&rects[j]) || rects[j].overlap(&rects[i])
-                {
-                    //println!("{}-{}",i,j);
-                    //if !counted {
-                        cnt+=1;
-                     //   counted = true;
-                   // }
-                    
-                    //break;
-                }
-            }
-        }        
-    }
-*/
-   // print!("{:?}",rects);
+
     cnt
 }
 
 fn main() {
 
-    //let res = Rect::new_from_string("#1 @ 520,746: 4x20");
-    //print!("{:?}",res);
-
-    let data_test = vec![
+    let _data_test = vec![
         "#1 @ 1,3: 4x4",
         "#2 @ 3,1: 4x4",
         "#3 @ 5,5: 2x2",

@@ -1,4 +1,4 @@
-fn get_common(a:String,b:String) -> String {
+fn get_common(a:&str,b:&str) -> String {
     let chars_a: Vec<char> = a.chars().collect();
     let chars_b: Vec<char> = b.chars().collect();
 
@@ -268,7 +268,7 @@ fn main() {
 
     for s1 in data.iter() {
         for s2 in data.iter() {
-            let rest = get_common(s1.to_string(),s2.to_string());
+            let rest = get_common(s1,s2);
 
             if rest.len()==s1.len()-1
             {

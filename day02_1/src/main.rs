@@ -255,9 +255,10 @@ fn main() {
 
     let mut c2 = 0;
     let mut c3 = 0;
+    
     for s in data {
         
-        let mut chars: Vec<char> = s.chars().collect();
+        let     chars: Vec<char> = s.chars().collect();
         let mut hash : HashMap<char,i32> = HashMap::new();
         for c in chars {
             hash.insert(c, hash.get(&c).unwrap_or(&0) + 1);
@@ -265,9 +266,10 @@ fn main() {
         
         let mut s2 = 0;
         let mut s3 = 0;
-        for (v,k) in hash {
-            if k==2 { s2=1; }
-            if k==3 { s3=1; }
+        
+        for &v in hash.values() {
+            if v==2 { s2=1; }
+            if v==3 { s3=1; }
         }
         c2+=s2;
         c3+=s3;                
